@@ -1,0 +1,192 @@
+# 🦷 Dental Implant 10-Year Survival Prediction
+
+<div align="center">
+
+![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)
+![Framework](https://img.shields.io/badge/Framework-Scikit--Learn-orange.svg)
+![XGBoost](https://img.shields.io/badge/XGBoost-Gradient_Boosting-green.svg)
+![Status](https://img.shields.io/badge/Status-Active-brightgreen.svg)
+
+**A comprehensive machine learning walkthrough for predicting dental implant survival outcomes**
+
+[🎯 Overview](#-project-overview) • [📊 Workflow](#-workflow) • [🚀 Setup](#-setup) • [📦 Submission](#-submission)
+
+</div>
+
+> Educational Kaggle competition project with guided TODOs and hints to learn ML fundamentals step-by-step.
+
+---
+
+## 👨‍💻 Author
+
+<div align="center">
+
+**Francisco Teixeira Barbosa**
+
+[![GitHub](https://img.shields.io/badge/GitHub-Tuminha-black?style=flat&logo=github)](https://github.com/Tuminha)
+[![Kaggle](https://img.shields.io/badge/Kaggle-Profile-20BEFF?style=flat&logo=kaggle&logoColor=white)](https://www.kaggle.com/franciscotbarbosa)
+[![Email](https://img.shields.io/badge/Email-cisco%40periospot.com-blue?style=flat&logo=gmail)](mailto:cisco@periospot.com)
+[![Twitter](https://img.shields.io/badge/Twitter-cisco__research-1DA1F2?style=flat&logo=twitter)](https://twitter.com/cisco_research)
+
+*Learning Machine Learning through hands-on Kaggle competitions • Building AI solutions for dentistry*
+
+</div>
+
+---
+
+## 🎯 Project Overview
+
+This project is a comprehensive walkthrough for the Kaggle competition "Dental Implant 10-Year Survival Prediction". It aims to build and evaluate several machine learning models to predict the 10-year survival of dental implants based on clinical and patient data.
+
+### 🎓 Learning Objectives
+
+- Understand the complete ML workflow from EDA to submission
+- Master data preprocessing and feature engineering techniques
+- Compare baseline models with advanced gradient boosting methods
+- Learn best practices for Kaggle competitions
+
+### 🏆 Key Achievements
+
+- [ ] Complete exploratory data analysis with visualizations
+- [ ] Build and compare multiple ML models
+- [ ] Achieve competitive ROC-AUC score
+- [ ] Generate valid Kaggle submission
+
+---
+
+## 📂 Project Structure
+
+```
+/dental-implant-prediction
+├── data/
+│   ├── raw/                    # Original, immutable data from Kaggle
+│   │   ├── train.csv
+│   │   ├── test.csv
+│   │   └── sample_submission.csv
+│   └── processed/              # Cleaned and preprocessed data
+├── notebooks/
+│   ├── 01_EDA.ipynb                    # Exploratory Data Analysis
+│   ├── 02_Data_Preprocessing.ipynb     # Data cleaning & feature engineering
+│   ├── 03_Baseline_Models.ipynb        # Logistic Regression & Random Forest
+│   ├── 04_XGBoost.ipynb                # XGBoost model
+│   ├── 05_LightGBM.ipynb               # LightGBM model
+│   ├── 06_CatBoost.ipynb               # CatBoost model
+│   └── 07_Submission_Generation.ipynb  # Final submission generation
+├── results/                    # Model evaluation metrics (JSON)
+├── figures/                    # Plots and visualizations
+├── .gitignore
+└── README.md
+```
+
+---
+
+## 📊 Workflow
+
+1. **Exploratory Data Analysis (EDA):** Start with `01_EDA.ipynb` to understand the data distributions, correlations, and patterns.
+
+2. **Data Preprocessing:** Run `02_Data_Preprocessing.ipynb` to clean the data, handle categorical features, and prepare it for modeling.
+
+3. **Model Training:** Run the model-specific notebooks (`03` to `06`) to train and evaluate different classifiers:
+   - `03_Baseline_Models.ipynb` - Logistic Regression & Random Forest
+   - `04_XGBoost.ipynb` - Extreme Gradient Boosting
+   - `05_LightGBM.ipynb` - Light Gradient Boosting Machine
+   - `06_CatBoost.ipynb` - Categorical Boosting
+
+4. **Submission:** Use `07_Submission_Generation.ipynb` to generate the final `submission.csv` file.
+
+---
+
+## 🚀 Setup
+
+### Prerequisites
+
+```bash
+pip install pandas numpy matplotlib seaborn scikit-learn jupyter xgboost lightgbm catboost
+```
+
+### Getting Started
+
+1. Clone this repository:
+   ```bash
+   git clone <repository-url>
+   cd dental-implant-prediction
+   ```
+
+2. Download the data from the [Kaggle competition page](https://www.kaggle.com/competitions/dental-implant-10-year-survival-prediction/data) and place the files in the `/data/raw/` folder.
+
+3. Create a Python virtual environment (recommended):
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   pip install -r requirements.txt
+   ```
+
+4. Launch Jupyter and start with the first notebook:
+   ```bash
+   jupyter notebook notebooks/01_EDA.ipynb
+   ```
+
+---
+
+## 🛠 Technical Stack
+
+| Component | Technology | Purpose |
+|-----------|------------|---------|
+| Data Processing | Pandas, NumPy | ETL & feature engineering |
+| Visualization | Matplotlib, Seaborn | EDA & plots |
+| Baseline ML | Scikit-learn | LogReg, Random Forest |
+| Gradient Boosting | XGBoost, LightGBM, CatBoost | Advanced models |
+| Evaluation | Scikit-learn | ROC-AUC, Accuracy, Confusion Matrix |
+
+---
+
+## 📦 Submission
+
+After completing all notebooks:
+
+1. The best model will be trained on the full dataset in `07_Submission_Generation.ipynb`
+2. Predictions will be generated for the test set
+3. A `submission.csv` file will be created ready for Kaggle upload
+
+### Upload to Kaggle
+
+**Via UI:** Go to Kaggle → Competition → Submit Predictions → Upload `submission.csv`
+
+**Via CLI:**
+```bash
+kaggle competitions submit -c dental-implant-10-year-survival-prediction -f submission.csv -m "Your submission message"
+```
+
+---
+
+## 📝 Learning Journey
+
+This project covers:
+- **EDA Skills:** Data visualization, distribution analysis, correlation studies
+- **Preprocessing:** Handling categorical data, one-hot encoding, train-test splitting
+- **Model Training:** From simple baselines to gradient boosting ensembles
+- **Evaluation:** ROC-AUC, accuracy, confusion matrices, model comparison
+
+---
+
+## 🚀 Next Steps
+
+- [ ] Hyperparameter tuning with GridSearchCV/Optuna
+- [ ] Feature importance analysis with SHAP
+- [ ] Ensemble methods (stacking, blending)
+- [ ] Cross-validation strategies
+
+---
+
+## 📄 License
+
+MIT License (see [LICENSE](LICENSE))
+
+<div align="center">
+
+**⭐ Star this repo if you found it helpful! ⭐**
+
+*Building AI solutions for dentistry, one dataset at a time* 🦷
+
+</div>
+
