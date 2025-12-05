@@ -48,6 +48,7 @@ This project is a comprehensive walkthrough for the Kaggle competition "Dental I
 ### 🏆 Key Achievements
 
 - [x] Complete exploratory data analysis with visualizations ✅
+- [x] Data preprocessing with feature engineering ✅
 - [ ] Build and compare multiple ML models
 - [ ] Achieve competitive ROC-AUC score
 - [ ] Generate valid Kaggle submission
@@ -129,6 +130,51 @@ This mirrors real-world implant success rates but requires careful handling in m
 *Box plots comparing numerical feature distributions across survival outcomes*
 
 </div>
+
+---
+
+## 🔧 Data Preprocessing & Feature Engineering
+
+### Preprocessing Pipeline
+
+The data preprocessing notebook (`02_Data_Preprocessing.ipynb`) transforms raw data into model-ready features:
+
+| Step | Description |
+|------|-------------|
+| **1. Load Data** | Load train.csv (7,000 rows) and test.csv (3,000 rows) |
+| **2. Drop ID** | Remove `patient_id` (not predictive) |
+| **3. Feature Engineering** | Create 7 new clinically-informed features |
+| **4. Encode Categoricals** | Binary encoding + One-hot encoding |
+| **5. Save Processed Data** | Export to `/data/processed/` for modeling |
+
+### 🧬 Engineered Features
+
+We created 7 new features based on clinical domain knowledge:
+
+| Feature | Formula | Clinical Rationale |
+|---------|---------|-------------------|
+| `age_group` | Binned: young_adult, middle_age, senior, elderly | Healing capacity differs across life stages |
+| `patient_risk_score` | diabetes + vitamin_d_deficiency + bruxism | Combined systemic risk factors (0-3) |
+| `oral_hygiene_score` | Poor=0, Fair=1, Good=2 | Ordinal encoding for local oral health |
+| `oral_health_risk` | periodontitis + (2 - hygiene_score) | Combined local risk factors (0-3) |
+| `implant_size` | length_mm × diameter_mm | Surface area for osseointegration |
+| `bone_quality_score` | Type_1=3, Type_2=2, Type_3=1, Type_4=0 | Ordinal encoding (higher = better bone) |
+| `smoking_score` | Non-smoker=0, Former=1, Light=2, Heavy=3 | Dose-response effect on healing |
+
+### 📁 Processed Data Output
+
+```
+/data/processed/
+├── X_train.csv      # Training features (7,000 × 38 features)
+├── y_train.csv      # Training target labels
+├── X_test.csv       # Test features (3,000 × 38 features)
+├── test_ids.csv     # Patient IDs for submission
+└── feature_names.csv # List of all feature names
+```
+
+**Key Insight:** The original 18 raw features expanded to **38 features** after:
+- 7 engineered features added
+- One-hot encoding of multi-class categorical variables
 
 ---
 
