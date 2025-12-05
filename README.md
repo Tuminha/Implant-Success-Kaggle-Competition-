@@ -47,10 +47,88 @@ This project is a comprehensive walkthrough for the Kaggle competition "Dental I
 
 ### 🏆 Key Achievements
 
-- [ ] Complete exploratory data analysis with visualizations
+- [x] Complete exploratory data analysis with visualizations ✅
 - [ ] Build and compare multiple ML models
 - [ ] Achieve competitive ROC-AUC score
 - [ ] Generate valid Kaggle submission
+
+---
+
+## 📊 EDA Insights & Visualizations
+
+### Dataset Overview
+
+| Attribute | Value |
+|-----------|-------|
+| **Samples** | 7,000 implant cases |
+| **Features** | 19 predictive features + 1 target |
+| **Missing Values** | None ✅ |
+| **Target Variable** | `implant_survival_10y` (binary) |
+
+### ⚠️ Class Imbalance
+
+<div align="center">
+
+<img src="figures/target_distribution.png" alt="Target Distribution showing class imbalance" width="500"/>
+
+</div>
+
+The dataset is **highly imbalanced**:
+- **Survival (1):** 90.96% (6,367 cases)
+- **Failure (0):** 9.04% (633 cases)
+
+This mirrors real-world implant success rates but requires careful handling in modeling (class weights, SMOTE, appropriate metrics).
+
+### Feature Distributions
+
+<div align="center">
+
+<img src="figures/numerical_distributions.png" alt="Numerical feature distributions" width="700"/>
+
+*Distribution of numerical features including age, implant dimensions, and insertion torque*
+
+</div>
+
+<div align="center">
+
+<img src="figures/categorical_distributions.png" alt="Categorical feature distributions" width="700"/>
+
+*Distribution of categorical features: gender, smoking status, oral hygiene, bone quality, and more*
+
+</div>
+
+### Feature Correlations
+
+<div align="center">
+
+<img src="figures/correlation_heatmap.png" alt="Correlation matrix heatmap" width="600"/>
+
+*Correlation matrix showing weak linear relationships between numerical features and target*
+
+</div>
+
+**Key Finding:** All numerical correlations with the target are weak (|r| < 0.1), suggesting:
+- No single feature is a strong linear predictor
+- Tree-based models may capture non-linear patterns better
+- Categorical features and feature interactions are likely important
+
+### Features vs. Target
+
+<div align="center">
+
+<img src="figures/categorical_vs_target.png" alt="Categorical features vs target" width="700"/>
+
+*Relationship between categorical features and implant survival outcome*
+
+</div>
+
+<div align="center">
+
+<img src="figures/numerical_vs_target.png" alt="Numerical features vs target" width="700"/>
+
+*Box plots comparing numerical feature distributions across survival outcomes*
+
+</div>
 
 ---
 
