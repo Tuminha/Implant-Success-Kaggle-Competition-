@@ -264,6 +264,56 @@ We ran **50 trials** optimizing F1 (Macro) score with 3-fold cross-validation.
 
 ---
 
+## ⚡ LightGBM with Optuna Tuning
+
+### Class Imbalance Handling in LightGBM
+
+LightGBM uses `is_unbalance=True` parameter to automatically adjust sample weights based on class distribution.
+
+| Model | ROC-AUC | F1 (Macro) | Recall (Failure) | Recall (Survival) |
+|-------|---------|------------|------------------|-------------------|
+| LightGBM (no weights) | 0.558 | 0.475 | **0%** ❌ | 99.7% |
+| LightGBM (is_unbalance) | 0.557 | 0.528 | **22.8%** | 85.6% |
+| **LightGBM (Optuna)** | 0.583 | 0.524 | **26.0%** ✅ | 83.1% |
+
+### 🏆 Best Result So Far!
+
+LightGBM with Optuna achieved the **highest failure recall** among all models tested:
+- **26% of at-risk implants detected** (33 out of 127 failures)
+- Trade-off: 83% survival recall (some false positives)
+
+### Optuna Hyperparameter Tuning
+
+We ran **50 trials** optimizing F1 (Macro) score with 3-fold cross-validation.
+
+**Best Parameters Found:**
+- `n_estimators`: 225
+- `max_depth`: 9
+- `learning_rate`: 0.014
+- `num_leaves`: 54
+- `min_child_samples`: 52
+- `reg_alpha`: 0.069, `reg_lambda`: 0.311
+
+<div align="center">
+
+<img src="figures/lgb_optuna_comparison.png" alt="LightGBM 3-way comparison" width="800"/>
+
+*Left: No weights (0% failure recall). Middle: is_unbalance=True. Right: Optuna optimized (26% failure recall)*
+
+</div>
+
+### LightGBM Feature Importance
+
+<div align="center">
+
+<img src="figures/lgb_feature_importance.png" alt="LightGBM feature importance" width="600"/>
+
+*Top features: implant_size, age, implant_length, insertion_torque, bone_quality_score*
+
+</div>
+
+---
+
 ## 📂 Project Structure
 
 ```
