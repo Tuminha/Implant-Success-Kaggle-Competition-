@@ -50,8 +50,9 @@ This project is a comprehensive walkthrough for the Kaggle competition "Dental I
 - [x] Complete exploratory data analysis with visualizations ✅
 - [x] Data preprocessing with feature engineering ✅
 - [x] Baseline models with class imbalance handling ✅
-- [ ] Advanced gradient boosting models (XGBoost, LightGBM, CatBoost)
-- [ ] Achieve competitive ROC-AUC score
+- [x] XGBoost with Optuna hyperparameter tuning ✅
+- [x] LightGBM with Optuna hyperparameter tuning ✅
+- [ ] CatBoost model
 - [ ] Generate valid Kaggle submission
 
 ---
@@ -217,6 +218,49 @@ With 91% survival vs 9% failure, naive models predict "everyone survives" achiev
 2. **Class weights** are essential for minority class detection
 3. **Recall per class** is more informative than overall accuracy
 4. Simple Logistic Regression outperformed Random Forest on this task
+
+---
+
+## 🚀 XGBoost with Optuna Tuning
+
+### Class Imbalance Handling in XGBoost
+
+XGBoost uses `scale_pos_weight` parameter to handle class imbalance. We tested three approaches:
+
+| Model | ROC-AUC | F1 (Macro) | Recall (Failure) | Recall (Survival) |
+|-------|---------|------------|------------------|-------------------|
+| XGBoost (no weights) | 0.571 | 0.480 | **0%** ❌ | 100% |
+| XGBoost (scale_pos_weight) | 0.611 | 0.491 | **17%** | 83% |
+| **XGBoost (Optuna)** | 0.600 | 0.545 | **17.3%** ✅ | 91.8% |
+
+### Optuna Hyperparameter Tuning
+
+We ran **50 trials** optimizing F1 (Macro) score with 3-fold cross-validation.
+
+**Best Parameters Found:**
+- `n_estimators`: 80
+- `max_depth`: 9
+- `learning_rate`: 0.231
+- `scale_pos_weight`: 0.163
+- `gamma`: 4.60
+
+<div align="center">
+
+<img src="figures/xgb_optuna_comparison.png" alt="XGBoost 3-way comparison" width="800"/>
+
+*Left: No weights (0% failure recall). Middle: Manual scale_pos_weight. Right: Optuna optimized*
+
+</div>
+
+### XGBoost Feature Importance
+
+<div align="center">
+
+<img src="figures/xgb_feature_importance.png" alt="XGBoost feature importance" width="600"/>
+
+*Top features identified by XGBoost: implant_size, age, insertion_torque, implant dimensions*
+
+</div>
 
 ---
 

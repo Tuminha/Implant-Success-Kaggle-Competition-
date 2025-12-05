@@ -1,0 +1,22 @@
+{
+  "model": "LightGBM (Optuna Optimized)",
+  "roc_auc": 0.5826029405397382,
+  "pr_auc": 0.9306008143331522,
+  "accuracy": 0.7792857142857142,
+  "f1_macro": 0.5242886597938144,
+  "recall_failure": 0.25984251968503935,
+  "recall_survival": 0.8311076197957581,
+  "hyperparameters": {
+    "n_estimators": 225,
+    "max_depth": 9,
+    "learning_rate": 0.01394924724248946,
+    "num_leaves": 54,
+    "min_child_samples": 52,
+    "subsample": 0.5465657410937057,
+    "colsample_bytree": 0.8993601806378749,
+    "reg_alpha": 0.06856500439586234,
+    "reg_lambda": 0.31055540157615924
+  },
+  "optuna_trials": 50,
+  "optuna_best_cv_score": 0.5225970779423531
+}

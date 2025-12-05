@@ -1,0 +1,19 @@
+{
+  "model": "XGBoost_Optuna",
+  "roc_auc": 0.5996993895009,
+  "pr_auc": 0.9380758724822731,
+  "accuracy": 0.85,
+  "recall_failure": 0.1732283464566929,
+  "recall_survival": 0.9175176747839748,
+  "f1_macro": 0.5453730106203338,
+  "best_params": {
+    "n_estimators": 80,
+    "max_depth": 9,
+    "learning_rate": 0.23071962857958878,
+    "min_child_weight": 7,
+    "subsample": 0.6290269147082065,
+    "colsample_bytree": 0.7608850985145447,
+    "gamma": 4.602665471367205,
+    "scale_pos_weight": 0.16284443925401873
+  }
+}
