@@ -1,0 +1,11 @@
+{
+  "model": "RandomForest_Balanced",
+  "class_weight": "balanced",
+  "n_estimators": 100,
+  "roc_auc": 0.5779638896277006,
+  "pr_auc": 0.931476812117713,
+  "accuracy": 0.8928571428571429,
+  "recall_failure": 0.023622047244094488,
+  "recall_survival": 0.9795758051846033,
+  "f1_macro": 0.4908646572791807
+}

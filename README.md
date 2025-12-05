@@ -49,7 +49,8 @@ This project is a comprehensive walkthrough for the Kaggle competition "Dental I
 
 - [x] Complete exploratory data analysis with visualizations ✅
 - [x] Data preprocessing with feature engineering ✅
-- [ ] Build and compare multiple ML models
+- [x] Baseline models with class imbalance handling ✅
+- [ ] Advanced gradient boosting models (XGBoost, LightGBM, CatBoost)
 - [ ] Achieve competitive ROC-AUC score
 - [ ] Generate valid Kaggle submission
 
@@ -172,9 +173,50 @@ We created 7 new features based on clinical domain knowledge:
 └── feature_names.csv # List of all feature names
 ```
 
-**Key Insight:** The original 18 raw features expanded to **38 features** after:
+**Key Insight:** The original 18 raw features expanded to **27 features** after:
 - 7 engineered features added
-- One-hot encoding of multi-class categorical variables
+- Ordinal encoding for ordered categories (smoking, oral hygiene, bone quality)
+- One-hot encoding for nominal categories
+
+---
+
+## 🤖 Baseline Models Results
+
+### The Class Imbalance Challenge
+
+With 91% survival vs 9% failure, naive models predict "everyone survives" achieving 91% accuracy but **0% failure detection** — clinically useless!
+
+**Solution:** Use `class_weight='balanced'` to penalize errors on minority class.
+
+### Model Comparison
+
+| Model | ROC-AUC | Accuracy | Recall (Failure) | Recall (Survival) |
+|-------|---------|----------|------------------|-------------------|
+| Logistic Regression (no weights) | 0.610 | 90.9% | **0%** ❌ | 100% |
+| **Logistic Regression (balanced)** | 0.611 | 58.8% | **54.3%** ✅ | 59.2% |
+| Random Forest (no weights) | 0.573 | 90.9% | **0%** ❌ | 100% |
+| Random Forest (balanced) | 0.578 | 89.3% | **2.4%** | 98.0% |
+
+### Key Insight: The Accuracy Trap
+
+<div align="center">
+
+<img src="figures/lr_balanced_comparison.png" alt="Effect of class weights on Logistic Regression" width="700"/>
+
+*Left: Without class weights (0% failure recall). Right: With class weights (54% failure recall)*
+
+</div>
+
+**Logistic Regression (balanced)** is the current best model:
+- Detects 54% of at-risk implants (69 out of 127 failures)
+- Trade-off: More false positives (519 survivals flagged as at-risk)
+- Clinically meaningful: Better to over-monitor than miss failures!
+
+### Lessons Learned
+1. **Accuracy is misleading** for imbalanced data
+2. **Class weights** are essential for minority class detection
+3. **Recall per class** is more informative than overall accuracy
+4. Simple Logistic Regression outperformed Random Forest on this task
 
 ---
 

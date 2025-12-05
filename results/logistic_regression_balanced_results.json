@@ -1,0 +1,10 @@
+{
+  "model": "LogisticRegression_Balanced",
+  "class_weight": "balanced",
+  "roc_auc": 0.6114207248053145,
+  "pr_auc": 0.9376324815066213,
+  "accuracy": 0.5878571428571429,
+  "recall_failure": 0.5433070866141733,
+  "recall_survival": 0.5923016496465043,
+  "f1_macro": 0.45813419194714156
+}
