@@ -1,0 +1,27 @@
+{
+  "model": "CatBoost (Optuna Optimized)",
+  "roc_auc": 0.6001261821848074,
+  "pr_auc": 0.933560114954105,
+  "accuracy": 0.6471428571428571,
+  "f1_macro": 0.48831015093222846,
+  "recall_failure": 0.49606299212598426,
+  "recall_survival": 0.6622152395915161,
+  "hyperparameters": {
+    "iterations": 205,
+    "depth": 8,
+    "learning_rate": 0.0474081228520346,
+    "l2_leaf_reg": 8.175656292906874,
+    "bagging_temperature": 0.5207454799668334,
+    "auto_class_weights": "Balanced"
+  },
+  "optuna_trials": 50,
+  "optuna_best_cv_score": 0.5269635862782173,
+  "native_categorical_features": [
+    "gender",
+    "jaw_location",
+    "implant_surface",
+    "placement_timing",
+    "loading_protocol",
+    "restoration_type"
+  ]
+}
