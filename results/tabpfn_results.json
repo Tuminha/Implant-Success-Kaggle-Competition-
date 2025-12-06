@@ -1,0 +1,11 @@
+{
+  "model": "TabPFN (SMOTE)",
+  "roc_auc": 0.5705723351745211,
+  "pr_auc": 0.9344062415806748,
+  "f1_macro": 0.4748687171792948,
+  "accuracy": 0.9042857142857142,
+  "recall_failure": 0.0,
+  "recall_survival": 0.9945011783189317,
+  "method": "SMOTE oversampling",
+  "training_time_seconds": 0.47895288467407227
+}
