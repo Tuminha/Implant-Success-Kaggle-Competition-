@@ -52,8 +52,10 @@ This project is a comprehensive walkthrough for the Kaggle competition "Dental I
 - [x] Baseline models with class imbalance handling ✅
 - [x] XGBoost with Optuna hyperparameter tuning ✅
 - [x] LightGBM with Optuna hyperparameter tuning ✅
-- [ ] CatBoost model
-- [ ] Generate valid Kaggle submission
+- [x] CatBoost with native categorical handling + Optuna ✅
+- [x] TabPFN foundation model experiment ✅
+- [x] Comprehensive 6-model comparison ✅
+- [x] Generate valid Kaggle submission ✅
 
 ---
 
@@ -314,6 +316,112 @@ We ran **50 trials** optimizing F1 (Macro) score with 3-fold cross-validation.
 
 ---
 
+## 🐱 CatBoost with Native Categorical Handling
+
+### Why CatBoost?
+
+CatBoost natively handles categorical features without one-hot encoding, using **target encoding** internally for potentially better performance.
+
+### Class Imbalance Handling
+
+CatBoost uses `auto_class_weights='Balanced'` to automatically compute class weights.
+
+| Model | ROC-AUC | F1 (Macro) | Recall (Failure) | Recall (Survival) |
+|-------|---------|------------|------------------|-------------------|
+| CatBoost (no weights) | 0.592 | 0.476 | **0%** ❌ | 100% |
+| CatBoost (Balanced) | 0.594 | 0.482 | **52.8%** | 64.0% |
+| **CatBoost (Optuna)** | 0.600 | 0.488 | **49.6%** ✅ | 66.2% |
+
+### CatBoost Feature Importance
+
+<div align="center">
+
+<img src="figures/cat_feature_importance.png" alt="CatBoost feature importance" width="600"/>
+
+*Top features: smoking_score, bone_quality_score, implant_diameter, oral_hygiene_score*
+
+</div>
+
+---
+
+## 🧠 TabPFN - Foundation Model Experiment
+
+### What is TabPFN?
+
+[TabPFN](https://github.com/PriorLabs/TabPFN) is a **foundation model for tabular data** published in [Nature (2025)](https://nature.com/articles/s41586-024-08328-6). It claims to beat tree-based methods on small datasets with no hyperparameter tuning needed.
+
+### Our Results: A Cautionary Tale
+
+| Model | ROC-AUC | F1 (Macro) | Recall (Failure) | Recall (Survival) |
+|-------|---------|------------|------------------|-------------------|
+| TabPFN (Default) | 0.609 | 0.476 | **0%** ❌ | 100% |
+| **TabPFN (SMOTE)** | 0.571 | 0.475 | **0%** ❌ | 99.5% |
+
+### ⚠️ Key Finding
+
+**Despite being a Nature-published foundation model, TabPFN completely failed on this dataset:**
+- 0% failure recall even with SMOTE oversampling
+- The model outputs >85% confidence for survival on ALL samples
+- Threshold optimization had no effect
+
+**Lesson:** Not all that glitters is gold. Always validate new methods on your specific problem!
+
+---
+
+## 🏆 Final Model Comparison
+
+### Rankings by Failure Recall (Clinical Priority)
+
+| Rank | Model | Type | Failure Recall | F1 (Macro) | ROC-AUC |
+|------|-------|------|----------------|------------|---------|
+| 🥇 | **Logistic Regression** | Baseline | **54.3%** | 0.458 | 0.611 |
+| 🥈 | **CatBoost (Optuna)** | Gradient Boosting | **49.6%** | 0.488 | 0.600 |
+| 🥉 | LightGBM (Optuna) | Gradient Boosting | 26.0% | 0.524 | 0.583 |
+| 4️⃣ | XGBoost (Optuna) | Gradient Boosting | 17.3% | 0.545 | 0.600 |
+| 5️⃣ | Random Forest | Baseline | 2.4% | 0.491 | 0.578 |
+| 6️⃣ | TabPFN (SMOTE) | Foundation Model | 0.0% | 0.475 | 0.571 |
+
+### Model Comparison Visualizations
+
+<div align="center">
+
+<img src="figures/model_comparison_failure_recall.png" alt="Model comparison by failure recall" width="700"/>
+
+*Failure recall comparison: Logistic Regression wins with 54.3%*
+
+</div>
+
+<div align="center">
+
+<img src="figures/model_comparison_multi_metric.png" alt="Multi-metric model comparison" width="700"/>
+
+*Multi-metric comparison across all 6 models*
+
+</div>
+
+<div align="center">
+
+<img src="figures/model_comparison_tradeoff.png" alt="Trade-off scatter plot" width="600"/>
+
+*The trade-off: Higher failure recall = lower survival recall*
+
+</div>
+
+### 🎯 Final Recommendation
+
+**Best Model for Failure Detection: Logistic Regression (Balanced)**
+- Detects 54.3% of at-risk implants
+- Simple, interpretable, fast
+- Outperformed all complex models including TabPFN!
+
+**Key Takeaways:**
+1. **Class imbalance is critical** - without handling, ALL models achieve 0% failure recall
+2. **Accuracy is misleading** - 91% accuracy with 0% failure detection is useless
+3. **Simple models can win** - Logistic Regression beat gradient boosting and foundation models
+4. **Always validate** - TabPFN's Nature publication didn't guarantee success on our data
+
+---
+
 ## 📂 Project Structure
 
 ```
@@ -324,6 +432,7 @@ We ran **50 trials** optimizing F1 (Macro) score with 3-fold cross-validation.
 │   │   ├── test.csv
 │   │   └── sample_submission.csv
 │   └── processed/              # Cleaned and preprocessed data
+│       └── catboost/           # CatBoost-specific data (native categoricals)
 ├── notebooks/
 │   ├── 01_EDA.ipynb                    # Exploratory Data Analysis
 │   ├── 02_Data_Preprocessing.ipynb     # Data cleaning & feature engineering
@@ -331,7 +440,9 @@ We ran **50 trials** optimizing F1 (Macro) score with 3-fold cross-validation.
 │   ├── 04_XGBoost.ipynb                # XGBoost model
 │   ├── 05_LightGBM.ipynb               # LightGBM model
 │   ├── 06_CatBoost.ipynb               # CatBoost model
-│   └── 07_Submission_Generation.ipynb  # Final submission generation
+│   ├── 07_TabPFN.ipynb                 # TabPFN foundation model
+│   ├── 10_Model_Comparison.ipynb       # Comprehensive 6-model comparison
+│   └── 99_Submission_Generation.ipynb  # Final submission generation
 ├── results/                    # Model evaluation metrics (JSON)
 ├── figures/                    # Plots and visualizations
 ├── .gitignore
@@ -346,13 +457,16 @@ We ran **50 trials** optimizing F1 (Macro) score with 3-fold cross-validation.
 
 2. **Data Preprocessing:** Run `02_Data_Preprocessing.ipynb` to clean the data, handle categorical features, and prepare it for modeling.
 
-3. **Model Training:** Run the model-specific notebooks (`03` to `06`) to train and evaluate different classifiers:
+3. **Model Training:** Run the model-specific notebooks to train and evaluate different classifiers:
    - `03_Baseline_Models.ipynb` - Logistic Regression & Random Forest
    - `04_XGBoost.ipynb` - Extreme Gradient Boosting
    - `05_LightGBM.ipynb` - Light Gradient Boosting Machine
    - `06_CatBoost.ipynb` - Categorical Boosting
+   - `07_TabPFN.ipynb` - Foundation Model (experimental)
 
-4. **Submission:** Use `07_Submission_Generation.ipynb` to generate the final `submission.csv` file.
+4. **Model Comparison:** Run `10_Model_Comparison.ipynb` to compare all models side-by-side.
+
+5. **Submission:** Use `99_Submission_Generation.ipynb` to generate the final `submission.csv` file.
 
 ---
 
@@ -431,10 +545,11 @@ This project covers:
 
 ## 🚀 Next Steps
 
-- [ ] Hyperparameter tuning with GridSearchCV/Optuna
+- [x] Hyperparameter tuning with Optuna ✅
 - [ ] Feature importance analysis with SHAP
 - [ ] Ensemble methods (stacking, blending)
-- [ ] Cross-validation strategies
+- [ ] Neural network approach (notebook 09 reserved)
+- [ ] Threshold optimization for different clinical priorities
 
 ---
 
